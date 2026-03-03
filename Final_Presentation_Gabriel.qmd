@@ -1,0 +1,74 @@
+---
+title: "Final_Presentation_Gabriel"
+author: "Gabriel"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(tidyverse) # For data wrangling
+library(brms) # For stats
+library(ggeffects) # for plotting model predictions
+# Note: I needed to also install the `insight` and `see` packages to get `modelbased` to install properly; try that if you get similar error messages 
+#install.packages('insight')
+library(insight)
+#install.packages('see')
+library(see)
+#install.packages('modelbased') # if you need to install this package
+library(modelbased) # for plotting model predictions. supports the link scale (ggeffects does not)
+#install.packages('faraway') # if you need to install this package
+library(faraway) # For data on galapagos species richess
+library(ggplot2)
+library(here)
+```
+
+## Data Searching
+
+```{r}
+kelp_no3_quarterly <- read.csv(here("kelp_no3_waves_quarterly_long.csv"))
+kelp_no3_annual = read.csv(here("kelp_no3_waves_annual_long.csv"))
+# display the first 6 rows
+head(kelp_no3_quarterly)
+head(kelp_no3_annual)
+```
+
+```{r}
+p.basic.quarterly.nitrate = ggplot(data = kelp_no3_quarterly, aes(x = no3, y = kelp))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+p.basic.quarterly.nitrate
+```
+
+```{r}
+p.basic.annual.nitrate = ggplot(data = kelp_no3_annual, aes(x = no3, y = kelp))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+p.basic.annual.nitrate
+```
+
+```{r}
+#| label: fig-hexbin-annual
+#| fig-cap: "Hexagonal binning showing the density of observations for kelp abundance and nitrate."
+
+ggplot(data = kelp_no3_annual, aes(x = no3, y = kelp)) +
+  geom_hex(bins = 30) + # Adjust 'bins' to make hexes larger or smaller
+  scale_fill_viridis_c() + # A visually appealing, colorblind-friendly scale
+  geom_smooth(method = "lm", color = "red", linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    title = "Density of Kelp Abundance vs. Nitrate",
+    x = "Nitrate Concentration (NO3)",
+    y = "Kelp Abundance",
+    fill = "Count"
+  )
+```
+
+```{r}
+p.basic.annual.waves = ggplot(data = kelp_no3_annual, aes(x = waves, y = kelp))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+p.basic.annual.waves
+```
