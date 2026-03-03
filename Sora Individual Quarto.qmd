@@ -1,0 +1,36 @@
+---
+title: "Sora Individual Quarto"
+author: "Sora"
+format: pdf
+editor: visual
+---
+
+## Climate quarter head
+
+```{r}
+library("tidyverse")
+library(here)
+climind_quart = read_csv(here("climind_quarterly.csv"))
+head(climind_quart)
+```
+
+## Plot climate quarter (Tests)
+
+```{r}
+library(ggplot)
+```
+
+## Waves quarterly head
+
+```{r}
+wave_quart = read_csv(here("kelp_no3_waves_quarterly_long.csv"))
+head(wave_quart)
+
+```
+
+## Locations head
+
+```{r}
+locations = read_csv(here("locations.csv"))
+head(locations)
+```
