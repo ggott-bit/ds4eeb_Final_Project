@@ -22,7 +22,55 @@ library(ggplot2)
 library(here)
 ```
 
+## Data Wrangling
+
+```{r}
+#This chunk is intended to combine the no3 and climind df
+# 1. Read the CSV files into R
+kelp_data <- read.csv("kelp_no3_waves_quarterly_long.csv")
+clim_data <- read.csv("climind_quarterly.csv")
+
+# 2. Combine the data frames
+combined_sitespecific_climind <- left_join(kelp_data, clim_data, by = c("year", "quarter"))
+
+# View the new dataframe
+head(combined_sitespecific_climind)
+```
+
+```{r}
+# Save the combined data frame as a new CSV file
+write.csv(combined_sitespecific_climind, file = "newdf/combined_kelp_climind_data.csv", row.names = FALSE)
+```
+
+```{r}
+#this chunk is to create a new df with temp included
+# 1. Read the temperature data
+temp_data <- read.csv("SBH_temperature_20241231.csv")
+
+# 2. Convert daily data to quarterly averages
+temp_quarterly <- temp_data %>%
+  # Create a "quarter" column based on the MONTH (e.g., Jan-Mar = 1, Apr-Jun = 2, etc.)
+  mutate(quarter = ceiling(MONTH / 3)) %>%
+  # Rename YEAR to lowercase "year" so it matches your other datasets
+  rename(year = YEAR) %>%
+  # Group by the year and our newly created quarter
+  group_by(year, quarter) %>%
+  # Calculate the average surface temperature for that quarter (ignoring missing data)
+  summarize(mean_surf_temp = mean(SURF_TEMP_C, na.rm = TRUE), .groups = "drop")
+
+# 3. Join the new quarterly temperature data to your combined dataframe
+combined_sitespecific_climind_temp <- left_join(combined_sitespecific_climind, temp_quarterly, by = c("year", "quarter"))
+
+# View the results to make sure 'mean_surf_temp' was added
+head(combined_sitespecific_climind_temp)
+
+#save df as file
+write.csv(combined_sitespecific_climind_temp, file = "newdf/combined_sitespecific_climind_temp.csv", row.names = FALSE)
+```
+
 ## Data Searching
+
+### NO3 Vs. Kelp Biomass
 
 ```{r}
 kelp_no3_quarterly <- read.csv(here("kelp_no3_waves_quarterly_long.csv"))
@@ -65,10 +113,93 @@ ggplot(data = kelp_no3_annual, aes(x = no3, y = kelp)) +
   )
 ```
 
-```{r}
-p.basic.annual.waves = ggplot(data = kelp_no3_annual, aes(x = waves, y = kelp))+
-  geom_point()+
-  geom_smooth(method = "lm")
+### Wave Height Vs. Kelp Biomass
 
-p.basic.annual.waves
+```{r}
+p.basic.annual.waves = ggplot(data = kelp_no3_annual, aes(x = waves, y = kelp))+ ##creates a variable to store the plot, sets up layers and variables
+  geom_point()+ # Creates scatter plot
+  geom_smooth(method = "lm") # creates linear trend line
+
+p.basic.annual.waves #prints graph
+```
+
+### Finding what model fits best using PSIS and WAIC
+
+##### Linear
+
+###### Linear Model NO3 Vs. Kelp Biomass
+
+```{r}
+m.biomass.nitrate <- 
+  brm(data = kelp_no3_quarterly, # Give the model the Kelp/nitrate data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      kelp ~ no3,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.biomass.nitrate")
+```
+
+```{r}
+summary(m.biomass.nitrate)
+plot(m.biomass.nitrate)
+```
+
+###### linear model Waves Vs. Biomass
+
+```{r}
+m.biomass.waves <- 
+  brm(data = kelp_no3_quarterly, # Give the model the Kelp/wave data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      kelp ~ waves,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.biomass.waves")
+```
+
+```{r}
+summary(m.biomass.waves)
+plot(m.biomass.waves)
+```
+
+##### Multiple Regression
+
+##### Finding what variables impact Nitrate Levels (Adjustment direct effect)
+
+```{r}
+#THIS IS FOR THE DAG WITHOUT MEI PDO AND NPGO CONNECTED TO WAVE HEIGHT
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
+m.nitrate.MEI.NPGO.PDO.Temp <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      no3 ~ NPGO + MEI + mean_surf_temp,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp")
+
+summary(m.nitrate.NPGO.PDO.Temp)
+plot(m.nitrate.NPGO.PDO.Temp)
 ```
