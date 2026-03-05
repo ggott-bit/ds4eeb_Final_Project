@@ -34,3 +34,9 @@ head(wave_quart)
 locations = read_csv(here("locations.csv"))
 head(locations)
 ```
+
+```{r}
+ggplot(locations, aes(x = "no3", y = "kelp")) +
+  geom_point()
+
+```
