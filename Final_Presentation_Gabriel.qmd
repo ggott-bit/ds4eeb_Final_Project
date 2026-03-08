@@ -86,7 +86,13 @@ p.nitrateVsbiomass = ggplot(combined_data, aes(x = no3, y = kelp)) +
     x = Inf, y = Inf,
     label = paste("Slope =", round(coef(lm(kelp ~ no3, data = combined_data))[2], 3)),
     hjust = 1.1, vjust = 1.5
-  )
+  )+
+  labs(
+    title = "Relationship Between Nitrate Concentrations and Kelp Biomass",
+    x = "Nitrate Concentration (µmol/L)",
+    y = "Kelp Biomass (Kg)"
+  ) +
+  theme_classic()
 
 
 p.nitrateVsbiomass
@@ -105,7 +111,13 @@ p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
     x = Inf, y = Inf,
     label = paste("Slope =", round(coef(lm(kelp ~ waves, data = combined_data))[2], 3)),
     hjust = 1.1, vjust = 1.5
-  )
+  )+
+  labs(
+    title = "Relationship Between Wave Height and Kelp Biomass",
+    x = "Wave Height (M)",
+    y = "Kelp Biomass (Kg)"
+  ) +
+  theme_classic()
 
 
 p.wavesVsbiomass
@@ -122,7 +134,13 @@ p.tempVsbiomass = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
     x = Inf, y = Inf,
     label = paste("Slope =", round(coef(lm(kelp ~ mean_surf_temp, data = combined_data))[2], 3)),
     hjust = 1.1, vjust = 1.5
-  )
+  )+
+  labs(
+    title = "Relationship Between Mean Surface Temperature and Kelp Biomass",
+    x = "Mean Surface Temperature (°C)",
+    y = "Kelp Biomass (Kg)"
+  ) +
+  theme_classic()
 
 
 p.tempVsbiomass
@@ -217,7 +235,7 @@ summary(m.biomass.temp.nitrate.waves)
 plot(m.biomass.temp.nitrate.waves)
 ```
 
-##### What are the total effects of NPGO, MEI, and PDO on Kelpbiomass
+##### What are the total effects of NPGO, MEI, and PDO on Kelp biomass
 
 ```{r}
 #Total effect of NPGO on kelp biomass
