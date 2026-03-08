@@ -111,7 +111,6 @@ p.wavesVsbiomass
 
 ### DAG
 
-
 ```{r}
 kelp_dag <- dagitty('dag {
 bb="-1.707,-4.687,2.5,4.206"
@@ -387,3 +386,5 @@ m.biomass.temp.nitrate.waves <-
 summary(m.biomass.temp.nitrate.waves)
 plot(m.biomass.temp.nitrate.waves)
 ```
+
+testing
