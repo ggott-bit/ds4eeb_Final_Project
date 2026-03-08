@@ -75,49 +75,38 @@ write.csv(combined_sitespecific_climind_temp, file = "newdf/combined_sitespecifi
 ### NO3 Vs. Kelp Biomass
 
 ```{r}
-kelp_no3_quarterly <- read.csv(here("rawdata/kelp_no3_waves_quarterly_long.csv"))
-kelp_no3_annual = read.csv(here("rawdata/kelp_no3_waves_annual_long.csv"))
-# display the first 6 rows
-head(kelp_no3_quarterly)
-head(kelp_no3_annual)
-```
+combined_data = read.csv(here("newdf/combined_sitespecific_climind_temp.csv"))
 
-```{r}
-model.nitrate <- lm(kelp ~ no3, data = combined_sitespecific_climind_temp)
-slope <- coef(model.nitrate)[2] 
 
-p.basic.quarterly.nitrate <- ggplot(
-  data = combined_sitespecific_climind_temp,
-  aes(x = no3, y = kelp)
-) +
+p.nitrateVsbiomass = ggplot(combined_data, aes(x = no3, y = kelp)) +
   geom_point() +
-  geom_smooth(method = "lm", se = TRUE) +
+  geom_smooth(method = "lm") +
   annotate(
     "text",
     x = Inf, y = Inf,
-    label = paste("Slope =", round(slope, 3)),
+    label = paste("Slope =", round(coef(lm(kelp ~ no3, data = combined_data))[2], 3)),
     hjust = 1.1, vjust = 1.5
   )
 
-p.basic.quarterly.nitrate
-```
 
-```{r}
-p.basic.annual.nitrate = ggplot(data = kelp_no3_annual, aes(x = no3, y = kelp))+
-  geom_point()+
-  geom_smooth(method = "lm")
-
-p.basic.annual.nitrate
+p.nitrateVsbiomass
 ```
 
 ### Wave Height Vs. Kelp Biomass
 
 ```{r}
-p.basic.annual.waves = ggplot(data = kelp_no3_annual, aes(x = waves, y = kelp))+ ##creates a variable to store the plot, sets up layers and variables
-  geom_point()+ # Creates scatter plot
-  geom_smooth(method = "lm") # creates linear trend line
+p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  annotate(
+    "text",
+    x = Inf, y = Inf,
+    label = paste("Slope =", round(coef(lm(kelp ~ waves, data = combined_data))[2], 3)),
+    hjust = 1.1, vjust = 1.5
+  )
 
-p.basic.annual.waves #prints graph
+
+p.wavesVsbiomass
 ```
 
 ### DAG
@@ -156,9 +145,9 @@ impliedConditionalIndependencies(kelp_dag)
 
 ### Finding what model fits best using PSIS and WAIC
 
-##### Linear
+#### Linear
 
-###### Linear Model NO3 Vs. Kelp Biomass
+##### Linear Model NO3 Vs. Kelp Biomass (NOT USEFULL???)
 
 ```{r}
 m.biomass.nitrate <- 
@@ -183,7 +172,7 @@ summary(m.biomass.nitrate)
 plot(m.biomass.nitrate)
 ```
 
-###### linear model Waves Vs. Biomass
+##### linear model Waves Vs. Biomass
 
 ```{r}
 m.biomass.waves <- 
@@ -208,7 +197,7 @@ summary(m.biomass.waves)
 plot(m.biomass.waves)
 ```
 
-##### Multiple Regression
+#### Multiple Regression
 
 ##### Finding what variables impact Nitrate Levels (Adjustment direct effect)
 
@@ -231,10 +220,7 @@ m.nitrate.MEI.NPGO.PDO.Temp.waveheight <-
       # Save the fitted model object as output - helpful for reloading in the output later
       file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp.waveheight")
 
-<<<<<<< HEAD
-summary(m.nitrate.MEI.NPGO.PDO.Temp)
-plot(m.nitrate.MEI.NPGO.PDO.Temp)
-=======
+
 summary(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
 plot(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
 ```
