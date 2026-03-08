@@ -20,6 +20,8 @@ library(modelbased) # for plotting model predictions. supports the link scale (g
 library(faraway) # For data on galapagos species richess
 library(ggplot2)
 library(here)
+#install.packages("dagitty")   # only the first time
+library(dagitty)
 ```
 
 ## Data Wrangling
@@ -107,6 +109,40 @@ p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
 p.wavesVsbiomass
 ```
 
+### DAG
+
+```{r}
+kelp_dag <- dagitty('dag {
+bb="-1.707,-4.687,2.5,4.206"
+"Eutrophication " [latent,pos="1.072,0.732"]
+Grazing [latent,pos="-0.743,1.242"]
+Kelp_Biomass [outcome,pos="0.074,1.253"]
+MEI [pos="-0.885,-0.901"]
+NPGO [exposure,pos="0.706,-2.169"]
+Nitrate [pos="0.079,-0.136"]
+PDO [pos="-0.597,-1.734"]
+Temperature [pos="0.876,-0.808"]
+Wave_Height [pos="-0.738,0.535"]
+"Eutrophication" -> Nitrate
+Grazing -> Kelp_Biomass
+MEI -> Nitrate
+MEI -> Temperature
+MEI -> Wave_Height
+NPGO -> Nitrate
+NPGO -> Temperature
+Nitrate -> Kelp_Biomass
+PDO -> Nitrate
+PDO -> Temperature
+Temperature -> Kelp_Biomass
+Temperature -> Nitrate
+Wave_Height -> Kelp_Biomass
+Wave_Height -> Nitrate
+}')
+
+plot(kelp_dag)
+impliedConditionalIndependencies(kelp_dag)
+```
+
 ### Finding what model fits best using PSIS and WAIC
 
 #### Linear
@@ -166,14 +202,14 @@ plot(m.biomass.waves)
 ##### Finding what variables impact Nitrate Levels (Adjustment direct effect)
 
 ```{r}
-#THIS IS FOR THE DAG WITHOUT MEI PDO AND NPGO CONNECTED TO WAVE HEIGHT
-#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
-m.nitrate.MEI.NPGO.PDO.Temp <- 
+#Nitrate model chunk
+#estimating the direct effect of NPGO, PDO, Temperature, wave height, and MEI on Nitrate:
+m.nitrate.MEI.NPGO.PDO.Temp.waveheight <- 
   brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
       # Choose a gaussian (normal) distribution
       family = gaussian,
       # Specify the model here. 
-      no3 ~ NPGO + MEI + mean_surf_temp,
+      no3 ~ MEI + NPGO + PDO + mean_surf_temp + waves,
       # Here's where you specify parameters for executing the Markov chains
       # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
       iter = 2000, warmup = 1000, chains = 4, cores = 4,
@@ -182,8 +218,45 @@ m.nitrate.MEI.NPGO.PDO.Temp <-
       # (so that both of us get the exact same results when running the model)
       seed = 4,
       # Save the fitted model object as output - helpful for reloading in the output later
-      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp")
+      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp.waveheight")
 
-summary(m.nitrate.MEI.NPGO.PDO.Temp)
-plot(m.nitrate.MEI.NPGO.PDO.Temp)
+
+summary(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
+plot(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
+```
+
+```{r}
+
+##Kelp biomass model chunk
+#This tests the observed direct effects of no3, water temp, and wave height on kelp biomass
+
+m.kelp.direct <- 
+  brm(
+    data = combined_sitespecific_climind_temp, #gives data
+    family = gaussian, #sets family as gaussian distribution
+    kelp ~ no3 + mean_surf_temp + waves, #Sets parameters
+    iter = 2000, warmup = 1000, chains = 4, cores = 4, 
+    seed = 4,
+    file = "outputs/m.kelp.direct"
+  )
+
+summary(m.kelp.direct)
+plot(m.kelp.direct)
+```
+
+```{r}
+#Total effect of NPGO, MEI, and PDO on kelp biomass
+m.kelp.total <- 
+  brm(
+    data = combined_sitespecific_climind_temp, #gives data
+    family = gaussian, #sets family as gaussian distribution
+    kelp ~ NPGO + MEI + PDO, #Sets parameters based on dag
+    iter = 2000, warmup = 1000, chains = 4, cores = 4, 
+    seed = 4,
+    file = "outputs/m.kelp.total"
+  )
+
+summary(m.kelp.total)
+plot(m.kelp.total)
+>>>>>>> 9674f934d397e5ee571c74dde9f5a8ebf1ce6b53
 ```
