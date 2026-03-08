@@ -27,8 +27,8 @@ library(here)
 ```{r}
 #This chunk is intended to combine the no3 and climind df
 # 1. Read the CSV files into R
-kelp_data <- read.csv("kelp_no3_waves_quarterly_long.csv")
-clim_data <- read.csv("climind_quarterly.csv")
+kelp_data <- read.csv("rawdata/kelp_no3_waves_quarterly_long.csv")
+clim_data <- read.csv("rawdata/climind_quarterly.csv")
 
 # 2. Combine the data frames
 combined_sitespecific_climind <- left_join(kelp_data, clim_data, by = c("year", "quarter"))
@@ -45,7 +45,7 @@ write.csv(combined_sitespecific_climind, file = "newdf/combined_kelp_climind_dat
 ```{r}
 #this chunk is to create a new df with temp included
 # 1. Read the temperature data
-temp_data <- read.csv("SBH_temperature_20241231.csv")
+temp_data <- read.csv("rawdata/SBH_temperature_20241231.csv")
 
 # 2. Convert daily data to quarterly averages
 temp_quarterly <- temp_data %>%
@@ -73,61 +73,45 @@ write.csv(combined_sitespecific_climind_temp, file = "newdf/combined_sitespecifi
 ### NO3 Vs. Kelp Biomass
 
 ```{r}
-kelp_no3_quarterly <- read.csv(here("kelp_no3_waves_quarterly_long.csv"))
-kelp_no3_annual = read.csv(here("kelp_no3_waves_annual_long.csv"))
-# display the first 6 rows
-head(kelp_no3_quarterly)
-head(kelp_no3_annual)
-```
+combined_data = read.csv(here("newdf/combined_sitespecific_climind_temp.csv"))
 
-```{r}
-p.basic.quarterly.nitrate = ggplot(data = kelp_no3_quarterly, aes(x = no3, y = kelp))+
-  geom_point()+
-  geom_smooth(method = "lm")
 
-p.basic.quarterly.nitrate
-```
-
-```{r}
-p.basic.annual.nitrate = ggplot(data = kelp_no3_annual, aes(x = no3, y = kelp))+
-  geom_point()+
-  geom_smooth(method = "lm")
-
-p.basic.annual.nitrate
-```
-
-```{r}
-#| label: fig-hexbin-annual
-#| fig-cap: "Hexagonal binning showing the density of observations for kelp abundance and nitrate."
-
-ggplot(data = kelp_no3_annual, aes(x = no3, y = kelp)) +
-  geom_hex(bins = 30) + # Adjust 'bins' to make hexes larger or smaller
-  scale_fill_viridis_c() + # A visually appealing, colorblind-friendly scale
-  geom_smooth(method = "lm", color = "red", linetype = "dashed") +
-  theme_minimal() +
-  labs(
-    title = "Density of Kelp Abundance vs. Nitrate",
-    x = "Nitrate Concentration (NO3)",
-    y = "Kelp Abundance",
-    fill = "Count"
+p.nitrateVsbiomass = ggplot(combined_data, aes(x = no3, y = kelp)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  annotate(
+    "text",
+    x = Inf, y = Inf,
+    label = paste("Slope =", round(coef(lm(kelp ~ no3, data = combined_data))[2], 3)),
+    hjust = 1.1, vjust = 1.5
   )
+
+
+p.nitrateVsbiomass
 ```
 
 ### Wave Height Vs. Kelp Biomass
 
 ```{r}
-p.basic.annual.waves = ggplot(data = kelp_no3_annual, aes(x = waves, y = kelp))+ ##creates a variable to store the plot, sets up layers and variables
-  geom_point()+ # Creates scatter plot
-  geom_smooth(method = "lm") # creates linear trend line
+p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  annotate(
+    "text",
+    x = Inf, y = Inf,
+    label = paste("Slope =", round(coef(lm(kelp ~ waves, data = combined_data))[2], 3)),
+    hjust = 1.1, vjust = 1.5
+  )
 
-p.basic.annual.waves #prints graph
+
+p.wavesVsbiomass
 ```
 
 ### Finding what model fits best using PSIS and WAIC
 
-##### Linear
+#### Linear
 
-###### Linear Model NO3 Vs. Kelp Biomass
+##### Linear Model NO3 Vs. Kelp Biomass (NOT USEFULL???)
 
 ```{r}
 m.biomass.nitrate <- 
@@ -152,7 +136,7 @@ summary(m.biomass.nitrate)
 plot(m.biomass.nitrate)
 ```
 
-###### linear model Waves Vs. Biomass
+##### linear model Waves Vs. Biomass
 
 ```{r}
 m.biomass.waves <- 
@@ -177,7 +161,7 @@ summary(m.biomass.waves)
 plot(m.biomass.waves)
 ```
 
-##### Multiple Regression
+#### Multiple Regression
 
 ##### Finding what variables impact Nitrate Levels (Adjustment direct effect)
 
