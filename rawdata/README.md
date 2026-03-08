@@ -6,25 +6,25 @@ Here are the sources for all of the data that we used:
 
 ### Source 1:
 
-Santa Barbara Coastal LTER, Tom W Bell, Kyle C Cavanaugh, Daniel Reuman, Max C. N. Castorani, Lawrence Sheppard, & Jonathan Walter. (2021). *SBC LTER: REEF: Macrocystis pyrifera biomass and environmental drivers in southern and central California*. LTER Network Member Node. https://pasta.lternet.edu/package/metadata/eml/knb-lter-sbc/144/1.
+Santa Barbara Coastal LTER, Tom W Bell, Kyle C Cavanaugh, Daniel Reuman, Max C. N. Castorani, Lawrence Sheppard, & Jonathan Walter. (2021). *SBC LTER: REEF: Macrocystis pyrifera biomass and environmental drivers in southern and central California*. LTER Network Member Node. <https://pasta.lternet.edu/package/metadata/eml/knb-lter-sbc/144/1>.
 
 ### Source 2:
 
 Washburn, L. 2025. SBC LTER: Reference: Sea-surface water temperature, Santa Barbara Harbor, Santa Barbara, CA, USA, 1955 to present, ongoing ver 17. Environmental Data Initiative. <https://doi.org/10.6073/pasta/8020223a1e2ed16411f0c18b61fbc3fb>.
 
-### The files
+### The Files
 
-climind_annual.csv was downloaded from Source 1, and goes over the NPGO, MEI, and PDO for each year from 1987 - 2019. Don't worry, I will explain what each of those things are.
+climind_annual.csv was downloaded from Source 1, and conains the NPGO, MEI, and PDO values for each year from 1987 - 2019.
 
-climind_quarterly.csv is like climind_annual.csv but quarterly instead of annually, meaning that it has 4 times as many datapoints.
+climind_quarterly.csv is a quarterly data set that measures the same variables as climind_annual.csv, meaning that it has 4 times as many data points as the annual data set.
 
-kelp_no3_waves_annual_long.csv was downloaded from Source 1, and goes over the annual kelp biomass in kilograms, seawater nitrate concentration in micro-moles per liter, and wave height in meters at each of 361 half kilometer long segments of beach.
+kelp_no3_waves_annual_long.csv was downloaded from Source 1, and contains meaurements for the annual kelp biomass in kilograms, seawater nitrate concentration in micro-moles per liter, and wave height in meters at each of 361 half kilometer long segments of beach measured.
 
-kelp_no3_waves_quarterly_long.csv is like kelp_no3_waves_annual_long.csv but quarterly instead of annually, meaning that it has 4 times as many datapoints.
+kelp_no3_waves_quarterly_long.csv is a quarterly data set that measures the same variables as kelp_no3_waves_annual_long.csv, meaning that it has 4 times as many data points as the annual data set.
 
-locations.csv was downloaded from Source 1, and just specifies the latitude and longitude of each of the 361 sites mentioned in the previous two files.
+locations.csv was downloaded from Source 1, and specifies the latitude and longitude of each of the 361 measurement sites.
 
-SBH_temperature_20241231.csv was downloaded from Source 2, and goes over the daily surface temperature in Celsius of the water in the Santa Barbara harbor between 1955 and 2024.
+SBH_temperature_20241231.csv was downloaded from Source 2, and contains measurements for the daily surface temperature in degrees Celsius of the water in the Santa Barbara harbor between 1955 and 2024.
 
 ### Explaining Terms
 
