@@ -145,7 +145,11 @@ impliedConditionalIndependencies(kelp_dag)
 
 ### Finding what model fits best using PSIS and WAIC
 
-#### Linear
+```{r}
+
+```
+
+### Linear
 
 ##### Linear Model NO3 Vs. Kelp Biomass (NOT USEFULL???)
 
@@ -172,7 +176,7 @@ summary(m.biomass.nitrate)
 plot(m.biomass.nitrate)
 ```
 
-##### linear model Waves Vs. Biomass
+##### linear model Waves Vs. Biomass (Not useful???)
 
 ```{r}
 m.biomass.waves <- 
@@ -199,17 +203,18 @@ plot(m.biomass.waves)
 
 #### Multiple Regression
 
-##### Finding what variables impact Nitrate Levels (Adjustment direct effect)
+##### what variables are direct causes of nitrate according to my DAG? (Adjustment direct effect)
 
 ```{r}
-#Nitrate model chunk
-#estimating the direct effect of NPGO, PDO, Temperature, wave height, and MEI on Nitrate:
-m.nitrate.MEI.NPGO.PDO.Temp.waveheight <- 
+#Including MEI + PDO + Temp
+#Excluding NPGO
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
+m.nitrate.MEI.PDO.Temp <- 
   brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
       # Choose a gaussian (normal) distribution
       family = gaussian,
       # Specify the model here. 
-      no3 ~ MEI + NPGO + PDO + mean_surf_temp + waves,
+      no3 ~ MEI + PDO + mean_surf_temp,
       # Here's where you specify parameters for executing the Markov chains
       # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
       iter = 2000, warmup = 1000, chains = 4, cores = 4,
@@ -218,7 +223,103 @@ m.nitrate.MEI.NPGO.PDO.Temp.waveheight <-
       # (so that both of us get the exact same results when running the model)
       seed = 4,
       # Save the fitted model object as output - helpful for reloading in the output later
-      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp.waveheight")
+      file = "outputs/m.nitrate.MEI.PDO.Temp")
+
+summary(m.nitrate.MEI.PDO.Temp)
+plot(m.nitrate.MEI.PDO.Temp)
+```
+
+```{r}
+#Including NPGO + PDO + Temp
+#Excluding MEI
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
+m.nitrate.NPGO.PDO.Temp <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      no3 ~ NPGO + PDO + mean_surf_temp,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.nitrate.NPGO.PDO.Temp")
+
+summary(m.nitrate.NPGO.PDO.Temp)
+plot(m.nitrate.NPGO.PDO.Temp)
+```
+
+```{r}
+#Including NPGO + MEI + PDO 
+#Exclude temp
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
+m.nitrate.MEI.NPGO.PDO <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      no3 ~ NPGO + MEI + PDO,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.nitrate.MEI.NPGO.PDO")
+
+summary(m.nitrate.MEI.NPGO.PDO)
+plot(m.nitrate.MEI.NPGO.PDO)
+```
+
+```{r}
+#Including NPGO + MEI + mean_surf_temp
+#Exclude PDO
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
+m.nitrate.MEI.NPGO.Temp <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      no3 ~ NPGO + MEI + mean_surf_temp,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.nitrate.MEI.NPGO.Temp")
+
+summary(m.nitrate.MEI.NPGO.Temp)
+plot(m.nitrate.MEI.NPGO.Temp)
+```
+
+```{r}
+#Including NPGO + PDO + MEI + mean_surf_temp
+#Exclude none
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
+m.nitrate.MEI.NPGO.PDO.Temp <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      no3 ~ NPGO + PDO + MEI + mean_surf_temp,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp")
 
 
 summary(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
@@ -258,5 +359,32 @@ m.kelp.total <-
 
 summary(m.kelp.total)
 plot(m.kelp.total)
->>>>>>> 9674f934d397e5ee571c74dde9f5a8ebf1ce6b53
 ```
+
+##### Finding what variables impact Biomass Levels (Adjustment direct effect)
+
+```{r}
+#Including temp + nitrate + waves
+#Exclude none
+#estimating the direct effect of NPGO, PDO, Temperature, and MEI on Biomass:
+m.biomass.temp.nitrate.waves <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      kelp ~ mean_surf_temp + no3 + waves,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.biomass.temp.nitrate.waves")
+
+summary(m.biomass.temp.nitrate.waves)
+plot(m.biomass.temp.nitrate.waves)
+```
+
+testing 2

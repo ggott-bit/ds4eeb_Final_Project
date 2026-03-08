@@ -1,8 +1,3 @@
----
-title: "README"
-format: html
----
-
 # Raw Data
 
 This is a folder where we keep all of our raw data sets before we have modified them.
