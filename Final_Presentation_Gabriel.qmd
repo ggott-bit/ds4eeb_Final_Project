@@ -111,6 +111,8 @@ p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
 p.wavesVsbiomass
 ```
 
+### Mean Surface Temperature Vs. Kelp Biomass
+
 ```{r}
 p.tempVsbiomass = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
   geom_point() +
@@ -218,17 +220,49 @@ plot(m.biomass.temp.nitrate.waves)
 ##### What are the total effects of NPGO, MEI, and PDO on Kelpbiomass
 
 ```{r}
-#Total effect of NPGO, MEI, and PDO on kelp biomass
-m.kelp.total <- 
+#Total effect of NPGO on kelp biomass
+m.kelp.NPGO.total <- 
   brm(
     data = combined_sitespecific_climind_temp, #gives data
     family = gaussian, #sets family as gaussian distribution
-    kelp ~ NPGO + MEI + PDO, #Sets parameters based on dag
+    kelp ~ NPGO, #Sets parameters based on dag
     iter = 2000, warmup = 1000, chains = 4, cores = 4, 
     seed = 4,
-    file = "outputs/m.kelp.total"
+    file = "outputs/m.kelp.NPGO.total"
   )
 
-summary(m.kelp.total)
-plot(m.kelp.total)
+summary(m.kelp.NPGO.total)
+plot(m.kelp.NPGO.total)
+```
+
+```{r}
+#Total effect of PDO on kelp biomass
+m.kelp.PDO.total <- 
+  brm(
+    data = combined_sitespecific_climind_temp, #gives data
+    family = gaussian, #sets family as gaussian distribution
+    kelp ~ PDO, #Sets parameters based on dag
+    iter = 2000, warmup = 1000, chains = 4, cores = 4, 
+    seed = 4,
+    file = "outputs/m.kelp.PDO.total"
+  )
+
+summary(m.kelp.PDO.total)
+plot(m.kelp.PDO.total)
+```
+
+```{r}
+#Total effect of MEI on kelp biomass
+m.kelp.MEI.total <- 
+  brm(
+    data = combined_sitespecific_climind_temp, #gives data
+    family = gaussian, #sets family as gaussian distribution
+    kelp ~ MEI, #Sets parameters based on dag
+    iter = 2000, warmup = 1000, chains = 4, cores = 4, 
+    seed = 4,
+    file = "outputs/m.kelp.MEI.total"
+  )
+
+summary(m.kelp.MEI.total)
+plot(m.kelp.MEI.total)
 ```
