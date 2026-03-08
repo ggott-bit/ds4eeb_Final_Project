@@ -185,8 +185,8 @@ m.nitrate.MEI.NPGO.PDO.Temp <-
       file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp")
 
 
-summary(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
-plot(m.nitrate.MEI.NPGO.PDO.Temp.waveheight)
+summary(m.nitrate.MEI.NPGO.PDO.Temp)
+plot(m.nitrate.MEI.NPGO.PDO.Temp)
 ```
 
 ##### What variables are direct causes of kelp biomass according to our DAG? (Adjustment direct effect)
@@ -215,7 +215,7 @@ summary(m.biomass.temp.nitrate.waves)
 plot(m.biomass.temp.nitrate.waves)
 ```
 
-#### What are the total effects of NPGO, MEI, and PDO on kelpbiomass
+##### What are the total effects of NPGO, MEI, and PDO on Kelpbiomass
 
 ```{r}
 #Total effect of NPGO, MEI, and PDO on kelp biomass
