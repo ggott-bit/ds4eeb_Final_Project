@@ -39,7 +39,7 @@ Target audience:
 -   Our target audience are policy makers to see how nitrate
     concentrations correlate with the growth of giant kelp biomass.
 
-## Readme for daggity (move once we have separate folder for it?)
+## DAG (Visualized in slides)
 
 Our DAG assumes these relationships:
 
