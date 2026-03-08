@@ -183,7 +183,7 @@ impliedConditionalIndependencies(kelp_dag)
 
 #### Multiple Regression
 
-##### what variables are direct causes of nitrate concentrations according to our DAG? (Adjustment direct effect)
+##### What variables are direct causes of nitrate concentrations according to our DAG? (Adjustment direct effect)
 
 ```{r}
 #Including NPGO + PDO + MEI + mean_surf_temp
@@ -209,11 +209,84 @@ summary(m.nitrate.MEI.NPGO.PDO.Temp)
 plot(m.nitrate.MEI.NPGO.PDO.Temp)
 ```
 
+#### What variables are direct causes of mean surface temperature according to our DAG? (Adjustment direct effect)
+
+```{r}
+#Including MEI 
+#estimating the direct effect of MEI on surface temp:
+m.temp.MEI <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      mean_surf_temp ~ MEI,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.temp.MEI")
+
+
+summary(m.temp.MEI)
+plot(m.temp.MEI)
+```
+
+```{r}
+#Including PDO
+#estimating the direct effect of PDO on surface temp:
+m.temp.PDO <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      mean_surf_temp ~ PDO,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.temp.PDO")
+
+
+summary(m.temp.PDO)
+plot(m.temp.PDO)
+```
+
+```{r}
+#Including NPGO
+#estimating the direct effect of NPGO on surface temp:
+m.temp.NPGO <- 
+  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
+      # Choose a gaussian (normal) distribution
+      family = gaussian,
+      # Specify the model here. 
+      mean_surf_temp ~ NPGO,
+      # Here's where you specify parameters for executing the Markov chains
+      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
+      iter = 2000, warmup = 1000, chains = 4, cores = 4,
+      # Setting the "seed" determines which random numbers will get sampled.
+      # In this case, it makes the randomness of the Markov chain runs reproducible 
+      # (so that both of us get the exact same results when running the model)
+      seed = 4,
+      # Save the fitted model object as output - helpful for reloading in the output later
+      file = "outputs/m.temp.NPGO")
+
+
+summary(m.temp.NPGO)
+plot(m.temp.NPGO)
+```
+
 ##### What variables are direct causes of kelp biomass according to our DAG? (Adjustment direct effect)
 
 ```{r}
 #Including temp + nitrate + waves
-#Exclude none
 #finding the direct effect of mean surface temp, nitrate concentration, and wave height on Biomass:
 m.biomass.temp.nitrate.waves <- 
   brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
