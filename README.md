@@ -16,7 +16,7 @@ Our motivating question:
 
 Target audience:
 
--   Our target audience are policy makers to communicate how ocean conditions, such as nitrate concentrations and other longer term ocean weather patterns, correlate with the growth of giant kelp biomass.
+-   Our target audience are policy makers. Our goal is to communicate how ocean conditions, such as nitrate concentrations and other longer term ocean weather patterns, correlate with giant kelp biomass.
 
 ## DAG (Visualized in slides)
 
