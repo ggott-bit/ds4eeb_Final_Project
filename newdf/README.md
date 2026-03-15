@@ -1,6 +1,6 @@
 # newdf README
 
-This is the folder where we put the combined dataframes. These dataframes were created in Final_Presentation_Gabriel.qmd, and there are little blurbs explainin what they are.
+This is the folder where we put the combined dataframes. These dataframes were created in Final_Analysis.qmd, in the main folder and there are little blurbs explaining what they are.
 
 combined_sitespecific_climind_temp.csv is SBH_temperature_20241231.csv and climind_quarterly.csv merged together.
 
@@ -11,7 +11,7 @@ combines_kelp_climind_data.csv is climind_quarterly.csv and kelp_no3_waves_quart
 Combined data with temperature
 
 | Column Name (combined_sitespecific_climind_temp.csv) | Unit | Type | Description |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
 | year | Year | numeric | Year of measurement. |
 | quarter | Quarter | numeric | Quarter of measurement. |
@@ -26,7 +26,7 @@ Combined data with temperature
 Combined data without temperature
 
 | Column Name (combined_kelp_climind_data.csv) | Unit | Type | Description |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
 | year | Year | numeric | Year of measurement. |
 | quarter | Quarter | numeric | Quarter of measurement. |
