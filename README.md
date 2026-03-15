@@ -10,13 +10,13 @@ This is the repo for the ds4eeb project. Members include Gabriel, Leah, and Sora
 
 Our motivating question:
 
--   How does nitrate concentration and wave height in the water affects kelp biomass off the central coast of California from 1987 to 2019?
+-   How do ocean conditions affect kelp biomass off the central coast of California from 1987 to 2019?
 
 -   Which one is the most important predictor of Giant Kelp biomass?
 
 Target audience:
 
--   Our target audience are policy makers to see how nitrate concentrations correlate with the growth of giant kelp biomass.
+-   Our target audience are policy makers to communicate how ocean conditions, such as nitrate concentrations and other longer term ocean weather patterns, correlate with the growth of giant kelp biomass.
 
 ## DAG (Visualized in slides)
 
