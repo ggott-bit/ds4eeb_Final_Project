@@ -75,7 +75,7 @@ combined_data = read.csv(here("newdf/combined_sitespecific_climind_temp.csv"))
 
 ## Data Searching
 
-We are going to plot several different relationships to see how they may correlate. This alone will not give us enough information to draw conclusions, but it will help us learn where to start looking.
+We are going to plot several different relationships to see how they may correlate. This alone will not give us enough information to draw conclusions, but it will help us learn where to start looking. The plots created are those which determined by the DAG have a direct impact on kelp biomass
 
 Each relationship will be demonstrated on two separate plots. In the first plot the data will be modeled by both geom_smooth model "lm" and geom_smooth model "gam" ("gam" is used instead of "loess" as loss would not properly dsiplay. We believe that this is due to the sheer number of samples). When looking at the plot we can see how well the "gam" model fits with the "lm" model. If they are close together then the data is likely linear, if they deviate strongly then it is likely non-linear. The second plot for each relationship will be on a log scale. This is done to see if the relationship is logarithmic. If the slope of the data appears to become linear in these models than we know that the relationship is logarithmic.
 
@@ -210,16 +210,21 @@ ggsave(
 p.wavesVsbiomass.logarithmic
 ```
 
+It doesn't appear that the pattern follows any family of patterns specifically. looking at both models we can see that the data appears to peak in between 1 and 3 meters. Therefore wave height certainly does appear to have an impact on kelp biomass. When waves are too small (\<1m) or too large(\>3), the biomass of the kelp stays small. However, there is a sweet spot in between 1 and 3 meters. In this range the kelp is able to grow much more abundantly. There are several reasons that we can see this as a possiblity. Perhaps at low levels of wave activity there is not enough nutrient flow in the water to promote growth. On the flip side, perhaps when the waves are too large they are breaking down the kelp, preventing growth. These are just a few thought that come to mind when looking at the graphs and will be better examined in the brms models later on.
+
 ### Mean Surface Temperature Vs. Kelp Biomass
+
+Here we examine the relationship of water temperature Vs kelp biomass.
 
 ```{r}
 p.tempVsbiomass = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
 stat_summary_bin(
-    bins = 30,
+    bins = 60,
     fun = mean,
     geom = "point"
   )+  
   geom_smooth(method = "lm") +
+  geom_smooth(method = "gam", formula = y ~ s(x) , se = TRUE, linetype = "dashed", color = "green", linewidth = 1)+
   annotate(
     "text",
     x = Inf, y = Inf,
@@ -246,7 +251,7 @@ p.tempVsbiomass
 #Not very informative because there is such a narrow temp range
 p.tempVsbiomass.log = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
 stat_summary_bin(
-    bins = 30,
+    bins = 60,
     fun = mean,
     geom = "point"
   )+  
@@ -272,6 +277,8 @@ ggsave(
 
 p.tempVsbiomass.log
 ```
+
+Here we see that the relationship between water temperature and biomass is clearly positive. However when comparing the two it isnt exactly clear whether or not ir is
 
 ### DAG
 
