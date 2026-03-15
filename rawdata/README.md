@@ -18,13 +18,20 @@ climind_annual.csv was downloaded from Source 1, and conains the NPGO, MEI, and 
 
 climind_quarterly.csv is a quarterly data set that measures the same variables as climind_annual.csv, meaning that it has 4 times as many data points as the annual data set.
 
-kelp_no3_waves_annual_long.csv was downloaded from Source 1, and contains meaurements for the annual kelp biomass in kilograms, seawater nitrate concentration in micro-moles per liter, and wave height in meters at each of 361 half kilometer long segments of beach measured.
+kelp_no3_waves_annual_long.csv was downloaded from Source 1, and contains measurements for the annual kelp biomass in kilograms, seawater nitrate concentration in micro-moles per liter, and wave height in meters at each of 361 half kilometer long segments of beach measured.
 
 kelp_no3_waves_quarterly_long.csv is a quarterly data set that measures the same variables as kelp_no3_waves_annual_long.csv, meaning that it has 4 times as many data points as the annual data set.
 
 locations.csv was downloaded from Source 1, and specifies the latitude and longitude of each of the 361 measurement sites.
 
 SBH_temperature_20241231.csv was downloaded from Source 2, and contains measurements for the daily surface temperature in degrees Celsius of the water in the Santa Barbara harbor between 1955 and 2024.
+
+| Column Name (climind_annual.csv) | Unit | Type | Description |
+|----|----|----|----|
+| year | year | numeric | The year at which the information was taken. |
+| NPGO | standard deviations | numeric | See NPGO in explaining terms |
+| MEI | MEI.v2 | numeric | See MEI in explaining terms |
+| PDO | Degree offset | numeric | See PDO in explaining terms |
 
 ### Explaining Terms
 
