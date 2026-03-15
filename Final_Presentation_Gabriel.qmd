@@ -6,8 +6,11 @@ editor: visual
 ---
 
 ```{r}
+#install.packages('tidyverse')
 library(tidyverse) # For data wrangling
+#install.packages('brms')
 library(brms) # For stats
+#install.packages('ggeffects')
 library(ggeffects) # for plotting model predictions
 # Note: I needed to also install the `insight` and `see` packages to get `modelbased` to install properly; try that if you get similar error messages 
 #install.packages('insight')
@@ -18,9 +21,11 @@ library(see)
 library(modelbased) # for plotting model predictions. supports the link scale (ggeffects does not)
 #install.packages('faraway') # if you need to install this package
 library(faraway) # For data on galapagos species richess
+#install.packages('ggplot2')
 library(ggplot2)
+#install.packages('here')
 library(here)
-#install.packages("dagitty")   # only the first time
+#install.packages('dagitty')   # only the first time
 library(dagitty)
 ```
 
@@ -68,34 +73,58 @@ head(combined_sitespecific_climind_temp)
 
 #save df as file
 write.csv(combined_sitespecific_climind_temp, file = "newdf/combined_sitespecific_climind_temp.csv", row.names = FALSE)
+combined_data = read.csv(here("newdf/combined_sitespecific_climind_temp.csv"))
+
 ```
 
 ## Data Searching
 
-### NO3 Vs. Kelp Biomass
+#### NO3 vs Kelp Biomass
 
 ```{r}
-combined_data = read.csv(here("newdf/combined_sitespecific_climind_temp.csv"))
-
-
-p.nitrateVsbiomass = ggplot(combined_data, aes(x = no3, y = kelp)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
+#Ploting no3 vs biomass to find if the data is linear or nonlinear
+p.nitrateVsbiomass.linearitycheck = ggplot(combined_data, aes(x = no3, y = kelp)) +
+  stat_summary_bin(
+    bins = 30,
+    fun = mean,
+    geom = "point"
+  )+
+  labs(
+    title = "Relationship Between Nitrate Concentrations and Kelp Biomass",
+    x = "Nitrate Concentration (µmol/L)",
+    y = "Kelp Biomass (Kg)"
+  )+
+  theme_classic()+
   annotate(
     "text",
     x = Inf, y = Inf,
     label = paste("Slope =", round(coef(lm(kelp ~ no3, data = combined_data))[2], 3)),
     hjust = 1.1, vjust = 1.5
   )+
-  labs(
-    title = "Relationship Between Nitrate Concentrations and Kelp Biomass",
-    x = "Nitrate Concentration (µmol/L)",
-    y = "Kelp Biomass (Kg)"
+  geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1.2)+
+  geom_smooth(method = "gam", formula = y ~ s(x) , se = TRUE, linetype = "dashed", color = "green", linewidth = 1)
+
+p.nitrateVsbiomass.linearitycheck 
+```
+
+```{r}
+#Ploting nitrate vs biomass against a log scale
+p.nitrateVsbiomass.logscale = ggplot(combined_data, aes(x = no3, y = kelp)) +
+  stat_summary_bin(
+    bins = 30,
+    fun = mean,
+    geom = "point"
   ) +
-  theme_classic()
+  scale_x_log10() +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  theme_classic() +
+  labs(
+    title = "Kelp Biomass vs Nitrate Concentration",
+    x = "Nitrate Concentration (log10 scale)",
+    y = "Kelp Biomass (kg)"
+  )
 
-
-p.nitrateVsbiomass
+p.nitrateVsbiomass.logscale
 ```
 
 ### Wave Height Vs. Kelp Biomass
@@ -104,14 +133,19 @@ p.nitrateVsbiomass
 #Creates a scatter plot to show the relationship between waves and biomass
 
 p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
+  stat_summary_bin(
+    bins = 30,
+    fun = mean,
+    geom = "point"
+  )+
+  geom_smooth(method = "lm", color = "red") +
   annotate(
     "text",
     x = Inf, y = Inf,
     label = paste("Slope =", round(coef(lm(kelp ~ waves, data = combined_data))[2], 3)),
     hjust = 1.1, vjust = 1.5
   )+
+    geom_smooth(method = "gam", formula = y ~ s(x) , se = TRUE, linetype = "dashed", color = "green", linewidth = 1)+
   labs(
     title = "Relationship Between Wave Height and Kelp Biomass",
     x = "Wave Height (M)",
@@ -123,11 +157,44 @@ p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
 p.wavesVsbiomass
 ```
 
+```{r}
+#Creates a scatter plot to show the relationship between waves and biomass with a log scale
+
+p.wavesVsbiomass.logarithmic = ggplot(combined_data, aes(x = waves, y = kelp)) +
+  stat_summary_bin(
+    bins = 30,
+    fun = mean,
+    geom = "point"
+  )+
+  geom_smooth(method = "lm", color = "red") +
+  annotate(
+    "text",
+    x = Inf, y = Inf,
+    label = paste("Slope =", round(coef(lm(kelp ~ waves, data = combined_data))[2], 3)),
+    hjust = 1.1, vjust = 1.5
+  )+
+  scale_x_log10() +
+    geom_smooth(method = "gam", formula = y ~ s(x) , se = TRUE, linetype = "dashed", color = "green", linewidth = 1)+
+  labs(
+    title = "Relationship Between Wave Height and Kelp Biomass",
+    x = "Wave Height (M)",
+    y = "Kelp Biomass (Kg)"
+  ) +
+  theme_classic()
+
+
+p.wavesVsbiomass.logarithmic
+```
+
 ### Mean Surface Temperature Vs. Kelp Biomass
 
 ```{r}
 p.tempVsbiomass = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
-  geom_point() +
+stat_summary_bin(
+    bins = 30,
+    fun = mean,
+    geom = "point"
+  )+  
   geom_smooth(method = "lm") +
   annotate(
     "text",
@@ -144,6 +211,34 @@ p.tempVsbiomass = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
 
 
 p.tempVsbiomass
+```
+
+```{r}
+#Ploting nitrate vs biomass against a log scale
+#Not very informative because there is such a narrow temp range
+p.tempVsbiomass.log = ggplot(combined_data, aes(x = mean_surf_temp, y = kelp)) +
+stat_summary_bin(
+    bins = 30,
+    fun = mean,
+    geom = "point"
+  )+  
+  geom_smooth(method = "lm") +
+  annotate(
+    "text",
+    x = Inf, y = Inf,
+    label = paste("Slope =", round(coef(lm(kelp ~ mean_surf_temp, data = combined_data))[2], 3)),
+    hjust = 1.1, vjust = 1.5
+  )+
+    scale_x_log10() +
+  labs(
+    title = "Relationship Between Mean Surface Temperature and Kelp Biomass",
+    x = "Mean Surface Temperature (°C)",
+    y = "Kelp Biomass (Kg)"
+  ) +
+  theme_classic()
+
+
+p.tempVsbiomass.log
 ```
 
 ### DAG
