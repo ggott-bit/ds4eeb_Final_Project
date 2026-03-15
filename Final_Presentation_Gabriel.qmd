@@ -31,30 +31,27 @@ library(dagitty)
 
 ## Data Wrangling
 
+First we are going to combine the data into one data frame. This will make using the data later on easier as we will only have to refer to one data frame when creating plots and models. Left join will be great for this as it will ensure that all data ends up in the proper location. There were some issues with the way the data moved when done at once, so it has been broken down into several steps. Luckily, we will not have to pivot any data as it is already in the proper format.
+
 ```{r}
-#This chunk is intended to combine the no3 and climind df
-# 1. Read the CSV files into R
+#This chunk is intended to combine the no3, climind df, and temp data frame
+#Read the CSV files into R
 kelp_data <- read.csv("rawdata/kelp_no3_waves_quarterly_long.csv")
 clim_data <- read.csv("rawdata/climind_quarterly.csv")
 
-# 2. Combine the data frames
+#Combine the data frames
 combined_sitespecific_climind <- left_join(kelp_data, clim_data, by = c("year", "quarter"))
 
-# View the new dataframe
+#View the new dataframe
 head(combined_sitespecific_climind)
-```
 
-```{r}
-# Save the combined data frame as a new CSV file
+#Save the combined data frame as a new CSV file
 write.csv(combined_sitespecific_climind, file = "newdf/combined_kelp_climind_data.csv", row.names = FALSE)
-```
 
-```{r}
-#this chunk is to create a new df with temp included
-# 1. Read the temperature data
+#Read the temperature data
 temp_data <- read.csv("rawdata/SBH_temperature_20241231.csv")
 
-# 2. Convert daily data to quarterly averages
+#Convert daily data to quarterly averages
 temp_quarterly <- temp_data %>%
   # Create a "quarter" column based on the MONTH (e.g., Jan-Mar = 1, Apr-Jun = 2, etc.)
   mutate(quarter = ceiling(MONTH / 3)) %>%
@@ -65,27 +62,32 @@ temp_quarterly <- temp_data %>%
   # Calculate the average surface temperature for that quarter (ignoring missing data)
   summarize(mean_surf_temp = mean(SURF_TEMP_C, na.rm = TRUE), .groups = "drop")
 
-# 3. Join the new quarterly temperature data to your combined dataframe
+#Join the new quarterly temperature data to your combined dataframe
 combined_sitespecific_climind_temp <- left_join(combined_sitespecific_climind, temp_quarterly, by = c("year", "quarter"))
 
-# View the results to make sure 'mean_surf_temp' was added
+#View the results
 head(combined_sitespecific_climind_temp)
 
 #save df as file
 write.csv(combined_sitespecific_climind_temp, file = "newdf/combined_sitespecific_climind_temp.csv", row.names = FALSE)
 combined_data = read.csv(here("newdf/combined_sitespecific_climind_temp.csv"))
-
 ```
 
 ## Data Searching
 
-#### NO3 vs Kelp Biomass
+We are going to plot several different relationships to see how they may correlate. This alone will not give us enough information to draw conclusions, but it will help us learn where to start looking.
+
+Each relationship will be demonstrated on two separate plots. In the first plot the data will be modeled by both geom_smooth model "lm" and geom_smooth model "gam" ("gam" is used instead of "loess" as loss would not properly dsiplay. We believe that this is due to the sheer number of samples). When looking at the plot we can see how well the "gam" model fits with the "lm" model. If they are close together then the data is likely linear, if they deviate strongly then it is likely non-linear. The second plot for each relationship will be on a log scale. This is done to see if the relationship is logarithmic. If the slope of the data appears to become linear in these models than we know that the relationship is logarithmic.
+
+### NO3 vs Kelp Biomass
+
+Here we run the relationships for nitrate Vs Kelp biomass.
 
 ```{r}
 #Ploting no3 vs biomass to find if the data is linear or nonlinear
 p.nitrateVsbiomass.linearitycheck = ggplot(combined_data, aes(x = no3, y = kelp)) +
   stat_summary_bin(
-    bins = 30,
+    bins = 60,
     fun = mean,
     geom = "point"
   )+
@@ -104,6 +106,11 @@ p.nitrateVsbiomass.linearitycheck = ggplot(combined_data, aes(x = no3, y = kelp)
   geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1.2)+
   geom_smooth(method = "gam", formula = y ~ s(x) , se = TRUE, linetype = "dashed", color = "green", linewidth = 1)
 
+ggsave(
+  filename = here("outputs", "p.nitrateVsbiomass.linearitycheck.png"),
+  plot = p.nitrateVsbiomass.linearitycheck
+)
+
 p.nitrateVsbiomass.linearitycheck 
 ```
 
@@ -111,7 +118,7 @@ p.nitrateVsbiomass.linearitycheck
 #Ploting nitrate vs biomass against a log scale
 p.nitrateVsbiomass.logscale = ggplot(combined_data, aes(x = no3, y = kelp)) +
   stat_summary_bin(
-    bins = 30,
+    bins = 60,
     fun = mean,
     geom = "point"
   ) +
@@ -124,17 +131,26 @@ p.nitrateVsbiomass.logscale = ggplot(combined_data, aes(x = no3, y = kelp)) +
     y = "Kelp Biomass (kg)"
   )
 
+ggsave(
+  filename = here("outputs", "p.nitrateVsbiomass.logscale.png"),
+  plot = p.nitrateVsbiomass.logscale
+)
+
 p.nitrateVsbiomass.logscale
 ```
 
+We can see that the biomass certainly changes as the nitrate concentration changes. On the first plot we see that the data takes more of an M shape. On the second plot we do see that the data begins to make a more linear path. For this reason the relationship between nitrate and Vs kelp biomass is approximately logarithmic.
+
 ### Wave Height Vs. Kelp Biomass
+
+Here we are creating plots to model wave height Vs. biomass
 
 ```{r}
 #Creates a scatter plot to show the relationship between waves and biomass
 
 p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
   stat_summary_bin(
-    bins = 30,
+    bins = 60,
     fun = mean,
     geom = "point"
   )+
@@ -153,6 +169,10 @@ p.wavesVsbiomass = ggplot(combined_data, aes(x = waves, y = kelp)) +
   ) +
   theme_classic()
 
+ggsave(
+  filename = here("outputs", "p.wavesVsbiomass.png"),
+  plot = p.wavesVsbiomass
+)
 
 p.wavesVsbiomass
 ```
@@ -162,7 +182,7 @@ p.wavesVsbiomass
 
 p.wavesVsbiomass.logarithmic = ggplot(combined_data, aes(x = waves, y = kelp)) +
   stat_summary_bin(
-    bins = 30,
+    bins = 60,
     fun = mean,
     geom = "point"
   )+
@@ -182,6 +202,10 @@ p.wavesVsbiomass.logarithmic = ggplot(combined_data, aes(x = waves, y = kelp)) +
   ) +
   theme_classic()
 
+ggsave(
+  filename = here("outputs", "p.wavesVsbiomass.logarithmic.png"),
+  plot = p.wavesVsbiomass.logarithmic
+)
 
 p.wavesVsbiomass.logarithmic
 ```
@@ -209,6 +233,10 @@ stat_summary_bin(
   ) +
   theme_classic()
 
+ggsave(
+  filename = here("outputs", "p.tempVsbiomass.png"),
+  plot = p.tempVsbiomass
+)
 
 p.tempVsbiomass
 ```
@@ -237,6 +265,10 @@ stat_summary_bin(
   ) +
   theme_classic()
 
+ggsave(
+  filename = here("outputs", "p.tempVsbiomass.log.png"),
+  plot = p.tempVsbiomass.log
+)
 
 p.tempVsbiomass.log
 ```
@@ -271,6 +303,10 @@ Temperature -> Nitrate
 Wave_Height -> Kelp_Biomass
 Wave_Height -> Nitrate
 }')
+
+png(here("outputs", "kelp_dag.png"), width = 1600, height = 1200, res = 300)
+plot(kelp_dag)
+dev.off()
 
 plot(kelp_dag)
 impliedConditionalIndependencies(kelp_dag)
