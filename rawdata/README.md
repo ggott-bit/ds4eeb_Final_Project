@@ -28,10 +28,51 @@ SBH_temperature_20241231.csv was downloaded from Source 2, and contains measurem
 
 | Column Name (climind_annual.csv) | Unit | Type | Description |
 |----|----|----|----|
-| year | year | numeric | The year at which the information was taken. |
+| year | year | numeric | The year at which the information was taken |
 | NPGO | standard deviations | numeric | See NPGO in explaining terms |
 | MEI | MEI.v2 | numeric | See MEI in explaining terms |
 | PDO | Degree offset | numeric | See PDO in explaining terms |
+
+| Column Name (climind_annual.csv) | Unit | Type | Description |
+|---------------|---------------|---------------------------|---------------|
+| year | year | numeric | The year at which the information was taken |
+| quarter | the current quarter | numeric | The quarter at which the information was taken |
+| NPGO | standard deviations | numeric | See NPGO in explaining terms |
+| MEI | MEI.v2 | numeric | See MEI in explaining terms |
+| PDO | Degree offset | numeric | See PDO in explaining terms |
+
+| Column Name (kelp_no3_waves_annual_long.csv) | Unit | Type | Description |
+|----|----|----|----|
+| site_id | Arbitrary Numbering | numeric | An id which designates a 500m long stretch of the Californian coast |
+| year | year | numeric | The year at which the information was taken |
+| kelp | kg | numeric | Derived from satellite imagery using empirical relationships |
+| no3 | concentration in micro-moles per litre | numeric | Derived from empirical relationships with remotely-sensed sea surface temperature |
+| waves | average wave height in meters | numeric | Derived from an empirically validated swell propagation model |
+
+| Column Name (kelp_no3_waves_annual_long.csv) | Unit | Type | Description |
+|----|----|----|----|
+| site_id | Arbitrary Numbering | numeric | An id which designates a 500m long stretch of the Californian coast |
+| year | year | numeric | The year at which the information was taken |
+| quarter | the current quarter | numeric | The quarter at which the information was taken |
+| kelp | kg | numeric | Derived from satellite imagery using empirical relationships |
+| no3 | concentration in micro-moles per litre | numeric | Derived from empirical relationships with remotely-sensed sea surface temperature |
+| waves | average wave height in meters | numeric | Derived from an empirically validated swell propagation model |
+
+| Column Name (locations.csv) | Unit | Type | Description |
+|----|----|----|----|
+| site_id | Arbitrary Numbering | numeric | This is the same site id as in the kelp_no3_waves datasets. This dataset is explaining where each of the sites are. |
+| lat | latitude | numeric | latitude |
+| lon | longitude | numeric | longitude |
+
+| Column Name (SBH_temperature_20241231) | Unit | Type | Description |
+|----|----|----|----|
+| YEAR | year | numeric | The calendar year |
+| MONTH | month | numeric | the calendar month |
+| DAY | day | numeric | the calendar day |
+| TIME_PST | time (hour and minute not separated by a colon) | numeric | the time of day |
+| TIME_FLAG | time flag | numeric | data quality indicator |
+| SURF_TEMP_C | temperature (celsius) | numeric | temperature in celsius |
+| SURF_FLAG | Temperature flag | numeric | data quality indicator |
 
 ### Explaining Terms
 
