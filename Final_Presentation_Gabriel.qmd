@@ -275,6 +275,59 @@ p.tempVsbiomass.log
 
 ### DAG
 
+In our dag our observed variables are; PDO (Pacific Decadal Oscillation), NPGO (North Pacific Gyre Oscillation), MEI (Multivariate ENSO Index), Temperature, Nitrate, Wave Height, and Kelp Biomass.
+
+Our unobserved variables are Grazing and Eutrophication.
+
+The observed variables' origins and units are explained in the rawdata README.
+
+**Pacific Decadal Oscillation (PDO):**
+
+A recurring pattern of water surface temperatures in the Pacific ocean north of 20°N changing between warmer and cooler temperatures every few decades. With positive values indicating a warming event, and negative values indicating a cooling event.
+
+PDO causes change in temperature and nitrate concentration.
+
+**North Pacific Gyre Oscillation (NPGO):**\
+A recurring phase of upwelling, in the form of counter rotating gyres, along 40°N in the Pacific. When the NPGO is positive, upwelling-favorable conditions are seen in the California Current and Alaskan Gyre, while downwelling-favorable conditions are seen in the Subtropical Gyre and the Alaskan Coastal Current.
+
+NPGO causes change in temperature and nitrate concentration through gyres with bring up deep waters.
+
+**Multivariate El Nino Southern Oscillation Index (MEI):**
+
+An index used to characterize the intensity of an El Nino event, with high positive values indicating a warming event, and high negative values indicating a cooling event. 
+
+MEI causes change in temperature, nitrate concentration, and wave height with eastern winds and storms.
+
+**Temperature**\
+Measured in degrees C.
+
+Temperature causes changes in nitrate concentration and kelp biomass by impacting metabolic rates of nitrate fixing organisms and kelp.
+
+**Nitrate**
+
+Measured in micro-moles per liter.
+
+Nitrate affects kelp biomass because it is a nutrient required for plant growth.
+
+**Wave Height**
+
+Measured in meters.
+
+Wave height affects nitrate concentration and kelp biomass.
+
+**Kelp Biomass**
+
+Measured in kilograms.
+
+Kelp biomass is our outcome and if affected directly or indirectly by all other variables.
+
+**Grazing**
+
+An unobserved variable which would affect kelp biomass in the form of animals eating said kelp.
+
+**Eutrophication**\
+An unobserved variable which could increase nitrate concentration in the form of fertilizer runoff.
+
 ```{r}
 kelp_dag <- dagitty('dag {
 bb="-1.707,-4.687,2.5,4.206"
