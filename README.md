@@ -2,6 +2,8 @@
 
 This is the repo for the ds4eeb project. Members include Gabriel, Leah, and Sora.
 
+### Read Final_Analysis.qmd for data wrangling, visualization, and analysis.
+
 ## Questions and Context
 
 -   Kelp forests host a ton of biological diversity along the coasts of California, but they have been in the decline over the past few years. These kelp forests help sequester atmospheric carbon, helping to reduce the impact of climate change on the planet, but they themselves are also vulnerable. Because of the dynamic change in kelp forest biomass, it is important to understand how different variables could correlate to a more stable population of *Macrocystis Pyrifera*, commonly known as Giant Kelp.
