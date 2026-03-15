@@ -26,53 +26,67 @@ locations.csv was downloaded from Source 1, and specifies the latitude and longi
 
 SBH_temperature_20241231.csv was downloaded from Source 2, and contains measurements for the daily surface temperature in degrees Celsius of the water in the Santa Barbara harbor between 1955 and 2024.
 
-| Column Name (climind_annual.csv) | Unit | Type | Description |
-|----|----|----|----|
-| year | year | numeric | The year at which the information was taken |
-| NPGO | standard deviations | numeric | See NPGO in explaining terms |
-| MEI | MEI.v2 | numeric | See MEI in explaining terms |
-| PDO | Degree offset | numeric | See PDO in explaining terms |
+## Metadata
+
+Annual climate
 
 | Column Name (climind_annual.csv) | Unit | Type | Description |
 |----|----|----|----|
-| year | year | numeric | The year at which the information was taken |
-| quarter | the current quarter | numeric | The quarter at which the information was taken |
-| NPGO | standard deviations | numeric | See NPGO in explaining terms |
-| MEI | MEI.v2 | numeric | See MEI in explaining terms |
-| PDO | Degree offset | numeric | See PDO in explaining terms |
+| year | Year | numeric | Year of measurement. |
+| NPGO | Standard deviations | numeric | See NPGO in explaining terms. |
+| MEI | MEI.v2 | numeric | See MEI in explaining terms. |
+| PDO | Degree offset | numeric | See PDO in explaining terms. |
+
+Quarterly climate
+
+| Column Name (climind_quarterly.csv) | Unit | Type | Description |
+|----|----|----|----|
+| year | Year | numeric | Year of measurement. |
+| quarter | Quarter | numeric | Quarter of measurement. |
+| NPGO | Standard deviations | numeric | See NPGO in explaining terms. |
+| MEI | MEI.v2 | numeric | See MEI in explaining terms. |
+| PDO | Degree offset | numeric | See PDO in explaining terms. |
+
+Kelp, NO3, Waves long form annual
 
 | Column Name (kelp_no3_waves_annual_long.csv) | Unit | Type | Description |
 |----|----|----|----|
-| site_id | Arbitrary Numbering | numeric | An id which designates a 500m long stretch of the Californian coast |
-| year | year | numeric | The year at which the information was taken |
-| kelp | kg | numeric | Derived from satellite imagery using empirical relationships |
-| no3 | concentration in micro-moles per litre | numeric | Derived from empirical relationships with remotely-sensed sea surface temperature |
-| waves | average wave height in meters | numeric | Derived from an empirically validated swell propagation model |
+| site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
+| year | Year | numeric | Year of measurement. |
+| kelp | Kilograms | numeric | Kelp biomass estimated from remotely sensed data and empirical relationships. |
+| no3 | Concentration in micro-moles per liter | numeric | Seawater nitrate concentration estimated from empirical relationships with remotely sensed sea surface temperature. |
+| waves | Average wave height in meters | numeric | Wave height estimated from swell propagation model. |
 
-| Column Name (kelp_no3_waves_annual_long.csv) | Unit | Type | Description |
+Kelp, NO3, Waves long form quarterly
+
+| Column Name (kelp_no3_waves_quarterly_long.csv) | Unit | Type | Description |
 |----|----|----|----|
-| site_id | Arbitrary Numbering | numeric | An id which designates a 500m long stretch of the Californian coast |
-| year | year | numeric | The year at which the information was taken |
-| quarter | the current quarter | numeric | The quarter at which the information was taken |
-| kelp | kg | numeric | Derived from satellite imagery using empirical relationships |
-| no3 | concentration in micro-moles per litre | numeric | Derived from empirical relationships with remotely-sensed sea surface temperature |
-| waves | average wave height in meters | numeric | Derived from an empirically validated swell propagation model |
+| site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
+| year | Year | numeric | Year of measurement. |
+| quarter | Quarter | numeric | Quarter of measurement. |
+| kelp | Kilograms | numeric | Kelp biomass estimated from remotely sensed data and empirical relationships. |
+| no3 | Concentration in micro-moles per liter | numeric | Seawater nitrate concentration estimated from empirical relationships with remotely sensed sea surface temperature. |
+| waves | Average wave height in meters | numeric | Wave height estimated from swell propagation model. |
+
+Locations
 
 | Column Name (locations.csv) | Unit | Type | Description |
 |----|----|----|----|
-| site_id | Arbitrary Numbering | numeric | This is the same site id as in the kelp_no3_waves datasets. This dataset is explaining where each of the sites are. |
-| lat | latitude | numeric | latitude |
-| lon | longitude | numeric | longitude |
+| site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
+| lat | Latitude | numeric | Latitude. |
+| lon | Longitude | numeric | Longitude. |
+
+Temperature
 
 | Column Name (SBH_temperature_20241231) | Unit | Type | Description |
 |----|----|----|----|
-| YEAR | year | numeric | The calendar year |
-| MONTH | month | numeric | the calendar month |
-| DAY | day | numeric | the calendar day |
-| TIME_PST | time (hour and minute not separated by a colon) | numeric | the time of day |
-| TIME_FLAG | time flag | numeric | data quality indicator |
-| SURF_TEMP_C | temperature (celsius) | numeric | temperature in celsius |
-| SURF_FLAG | Temperature flag | numeric | data quality indicator |
+| YEAR | Year | numeric | The calendar year. |
+| MONTH | Month | numeric | the calendar month. |
+| DAY | Day | numeric | the calendar day. |
+| TIME_PST | Time (hour and minute not separated by a colon) | numeric | the time of day. |
+| TIME_FLAG | Time flag | numeric | Data quality indicator. |
+| SURF_TEMP_C | Temperature (Celsius) | numeric | Temperature in degrees Celsius. |
+| SURF_FLAG | Temperature flag | numeric | Data quality indicator. |
 
 ### Explaining Terms
 
