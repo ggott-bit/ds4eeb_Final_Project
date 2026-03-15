@@ -17,13 +17,16 @@ head(climind_quart)
 ## Plot climate quarter (Tests)
 
 ```{r}
+
 library(ggplot)
 ```
 
 ## Waves quarterly head
 
 ```{r}
+#read csv files for kelp_no3_waves_quarterly_long
 wave_quart = read_csv(here("kelp_no3_waves_quarterly_long.csv"))
+#Show dataset
 head(wave_quart)
 
 ```
@@ -31,10 +34,25 @@ head(wave_quart)
 ## Locations head
 
 ```{r}
+#read csv files for locations
 locations = read_csv(here("locations.csv"))
+#Show dataset
 head(locations)
 ```
 
 ```{r}
 ?summarize(mean_surf_temp = mean(SURF_TEMP_C, na.rm = TRUE), .groups = "drop")
+```
+
+Combined kelp and climate data head 
+```{r}
+#read csv files for combined_kelp_climind_data
+combined_kelp_climind_data = read_csv(here("combined_kelp_climind_data.csv"))
+#Show dataset
+head(combined_kelp_climind_data)
+
+#read csv files for combined_sitespecific_climind_temp
+combined_sitespecific_climind_temp = read_csv(here("combined_sitespecific_climind_temp.csv"))
+#Show dataset
+head(combined_sitespecific_climind_temp)
 ```
