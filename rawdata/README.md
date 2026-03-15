@@ -33,24 +33,24 @@ Annual climate
 | Column Name (climind_annual.csv) | Unit | Type | Description |
 |----|----|----|----|
 | year | Year | numeric | Year of measurement. |
-| NPGO | Standard deviations | numeric | See NPGO in explaining terms. |
-| MEI | MEI.v2 | numeric | See MEI in explaining terms. |
-| PDO | Degree offset | numeric | See PDO in explaining terms. |
+| NPGO | NPGO Index | numeric | See NPGO in explaining terms. |
+| MEI | MEI.v2 Index | numeric | See MEI in explaining terms. |
+| PDO | PDO Index | numeric | See PDO in explaining terms. |
 
 Quarterly climate
 
 | Column Name (climind_quarterly.csv) | Unit | Type | Description |
 |----|----|----|----|
 | year | Year | numeric | Year of measurement. |
-| quarter | Quarter | numeric | Quarter of measurement. |
-| NPGO | Standard deviations | numeric | See NPGO in explaining terms. |
-| MEI | MEI.v2 | numeric | See MEI in explaining terms. |
-| PDO | Degree offset | numeric | See PDO in explaining terms. |
+| quarter | Quarter | numeric | Quarter of measurement. (Q1 = Jan – Mar, Q2 = Apr – Jun, Q3 = Jul – Sep, Q4 = Oct – Dec) |
+| NPGO | NPGO Index | numeric | See NPGO in explaining terms. |
+| MEI | MEI.v2 Index | numeric | See MEI in explaining terms. |
+| PDO | PDO Index | numeric | See PDO in explaining terms. |
 
 Kelp, NO3, Waves long form annual
 
 | Column Name (kelp_no3_waves_annual_long.csv) | Unit | Type | Description |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
 | year | Year | numeric | Year of measurement. |
 | kelp | Kilograms | numeric | Kelp biomass estimated from remotely sensed data and empirical relationships. |
@@ -60,10 +60,10 @@ Kelp, NO3, Waves long form annual
 Kelp, NO3, Waves long form quarterly
 
 | Column Name (kelp_no3_waves_quarterly_long.csv) | Unit | Type | Description |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
 | year | Year | numeric | Year of measurement. |
-| quarter | Quarter | numeric | Quarter of measurement. |
+| quarter | Quarter | numeric | Quarter of measurement. (Q1 = Jan – Mar, Q2 = Apr – Jun, Q3 = Jul – Sep, Q4 = Oct – Dec) |
 | kelp | Kilograms | numeric | Kelp biomass estimated from remotely sensed data and empirical relationships. |
 | no3 | Concentration in micro-moles per liter | numeric | Seawater nitrate concentration estimated from empirical relationships with remotely sensed sea surface temperature. |
 | waves | Average wave height in meters | numeric | Wave height estimated from swell propagation model. |
@@ -71,7 +71,7 @@ Kelp, NO3, Waves long form quarterly
 Locations
 
 | Column Name (locations.csv) | Unit | Type | Description |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | site_id | Arbitrary numbering | numeric | An id which designates a 500m long stretch of the Californian coast. |
 | lat | Latitude | numeric | Latitude. |
 | lon | Longitude | numeric | Longitude. |
@@ -79,7 +79,7 @@ Locations
 Temperature
 
 | Column Name (SBH_temperature_20241231) | Unit | Type | Description |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | YEAR | Year | numeric | The calendar year. |
 | MONTH | Month | numeric | the calendar month. |
 | DAY | Day | numeric | the calendar day. |

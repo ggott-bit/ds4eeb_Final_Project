@@ -18,9 +18,9 @@ Combined data with temperature
 | kelp | Kilograms | numeric | Kelp biomass estimated from remotely sensed data and empirical relationships. |
 | no3 | Concentration in micro-moles per liter | numeric | Seawater nitrate concentration estimated from empirical relationships with remotely sensed sea surface temperature. |
 | waves | Average wave height in meters | numeric | Wave height estimated from swell propagation model. |
-| NPGO | Standard deviations | numeric | See NPGO in explaining terms. |
-| MEI | MEI.v2 | numeric | See MEI in explaining terms. |
-| PDO | Degree offset | numeric | See PDO in explaining terms. |
+| NPGO | NPGO Index | numeric | See NPGO in explaining terms. |
+| MEI | MEI.v2 Index | numeric | See MEI in explaining terms. |
+| PDO | PDO Index | numeric | See PDO in explaining terms. |
 | mean_surf_temp | Temperature (Celsius) | numeric | The mean sea surface temperature. |
 
 Combined data without temperature
@@ -33,9 +33,9 @@ Combined data without temperature
 | kelp | Kilograms | numeric | Kelp biomass estimated from remotely sensed data and empirical relationships. |
 | no3 | Concentration in micro-moles per liter | numeric | Seawater nitrate concentration estimated from empirical relationships with remotely sensed sea surface temperature. |
 | waves | Average wave height in meters | numeric | Wave height estimated from swell propagation model. |
-| NPGO | Standard deviations | numeric | See NPGO in explaining terms. |
-| MEI | MEI.v2 | numeric | See MEI in explaining terms. |
-| PDO | Degree offset | numeric | See PDO in explaining terms. |
+| NPGO | NPGO Index | numeric | See NPGO in explaining terms. |
+| MEI | MEI.v2 Index | numeric | See MEI in explaining terms. |
+| PDO | PDO Index | numeric | See PDO in explaining terms. |
 
 ### Explaining Terms
 
