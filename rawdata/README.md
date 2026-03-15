@@ -34,7 +34,7 @@ SBH_temperature_20241231.csv was downloaded from Source 2, and contains measurem
 | PDO | Degree offset | numeric | See PDO in explaining terms |
 
 | Column Name (climind_annual.csv) | Unit | Type | Description |
-|---------------|---------------|---------------------------|---------------|
+|----|----|----|----|
 | year | year | numeric | The year at which the information was taken |
 | quarter | the current quarter | numeric | The quarter at which the information was taken |
 | NPGO | standard deviations | numeric | See NPGO in explaining terms |

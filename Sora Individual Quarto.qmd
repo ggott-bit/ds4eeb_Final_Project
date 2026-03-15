@@ -8,17 +8,13 @@ editor: visual
 ## Climate quarter head 
 
 ```{r}
+#set up r codes
 library("tidyverse")
 library(here)
+#read csv files for climind_quarterly
 climind_quart = read_csv(here("climind_quarterly.csv"))
+#Show dataset
 head(climind_quart)
-```
-
-## Plot climate quarter (Tests)
-
-```{r}
-
-library(ggplot)
 ```
 
 ## Waves quarterly head
@@ -40,9 +36,6 @@ locations = read_csv(here("locations.csv"))
 head(locations)
 ```
 
-```{r}
-?summarize(mean_surf_temp = mean(SURF_TEMP_C, na.rm = TRUE), .groups = "drop")
-```
 
 Combined kelp and climate data head 
 ```{r}
