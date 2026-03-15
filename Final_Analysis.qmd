@@ -278,9 +278,9 @@ ggsave(
 p.tempVsbiomass.log
 ```
 
-Here we see that the relationship between water temperature and biomass is clearly positive. However when comparing the two it isnt exactly clear whether or not ir is
+Here we see that the relationship between water temperature and biomass is clearly positive. However when comparing the two plots it isnt exactly clear whether or not it is linear or logaritmic. This is because when working with our temperature range, which is relatively narrow, the two plots look almost completely identical. It is our understading we can use the simple linear model as our guide, as that appears to have a goo fit on its own.
 
-### DAG
+## DAG
 
 In our dag our observed variables are; PDO (Pacific Decadal Oscillation), NPGO (North Pacific Gyre Oscillation), MEI (Multivariate ENSO Index), Temperature, Nitrate, Wave Height, and Kelp Biomass.
 
@@ -372,19 +372,23 @@ plot(kelp_dag)
 impliedConditionalIndependencies(kelp_dag)
 ```
 
-#### Multiple Regression
+## BRMS Analysis
 
-##### What variables are direct causes of nitrate concentrations according to our DAG? (Adjustment direct effect)
+Now we can begin to analyze the relationships in models. For this we will create Bayesian models estimated using MCMC.
+
+### What variables are direct causes of nitrate concentrations according to our DAG? (Adjustment direct effect)
+
+Here we will analyze what variables have an impact on the nitrate concentration and how large of an affect they have.
 
 ```{r}
-#Including NPGO + PDO + MEI + mean_surf_temp
+#Including NPGO + PDO + MEI + mean_surf_temp + wave height
 #estimating the direct effect of NPGO, PDO, Temperature, and MEI on Nitrate:
-m.nitrate.MEI.NPGO.PDO.Temp <- 
+m.nitrate.MEI.NPGO.PDO.Temp.Waves <- 
   brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
       # Choose a gaussian (normal) distribution
       family = gaussian,
       # Specify the model here. 
-      no3 ~ NPGO + PDO + MEI + mean_surf_temp,
+      no3 ~ NPGO + PDO + MEI + mean_surf_temp + waves,
       # Here's where you specify parameters for executing the Markov chains
       # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
       iter = 2000, warmup = 1000, chains = 4, cores = 4,
@@ -393,14 +397,16 @@ m.nitrate.MEI.NPGO.PDO.Temp <-
       # (so that both of us get the exact same results when running the model)
       seed = 4,
       # Save the fitted model object as output - helpful for reloading in the output later
-      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp")
+      file = "outputs/m.nitrate.MEI.NPGO.PDO.Temp.Waves")
 
 
-summary(m.nitrate.MEI.NPGO.PDO.Temp)
-plot(m.nitrate.MEI.NPGO.PDO.Temp)
+summary(m.nitrate.MEI.NPGO.PDO.Temp.Waves)
+plot(m.nitrate.MEI.NPGO.PDO.Temp.Waves)
 ```
 
-#### What variables are direct causes of mean surface temperature according to our DAG? (Adjustment direct effect)
+Now we can analyze what factors have an impact
+
+### What variables are direct causes of mean surface temperature according to our DAG? (Adjustment direct effect)
 
 ```{r}
 #Including MEI 
@@ -474,7 +480,7 @@ summary(m.temp.NPGO)
 plot(m.temp.NPGO)
 ```
 
-##### What variables are direct causes of kelp biomass according to our DAG? (Adjustment direct effect)
+### What variables are direct causes of kelp biomass according to our DAG? (Adjustment direct effect)
 
 ```{r}
 #Including temp + nitrate + waves
@@ -499,7 +505,7 @@ summary(m.biomass.temp.nitrate.waves)
 plot(m.biomass.temp.nitrate.waves)
 ```
 
-##### What are the total effects of NPGO, MEI, and PDO on Kelp biomass
+### What are the total effects of NPGO, MEI, and PDO on Kelp biomass
 
 ```{r}
 #Total effect of NPGO on kelp biomass
