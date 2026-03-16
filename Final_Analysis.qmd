@@ -376,7 +376,7 @@ impliedConditionalIndependencies(kelp_dag)
 
 Now we can begin to analyze the relationships in models. For this we will create Bayesian models estimated using MCMC.
 
-### What variables are direct causes of nitrate concentrations according to our DAG? 
+### What variables are direct causes of nitrate concentrations according to our DAG?
 
 Here we will analyze what variables have an impact on the nitrate concentration and how large of an affect they have.
 
@@ -416,9 +416,11 @@ Now we can analyze what factors have a direct impact on the nitrate levels.
 
 **Waves**: For every one meter increase in wave height the nitrate levels increased at an average of 0.78 micromoles per liter. The affect was significantly different from zero because the comatibility interval ran from 0.75 to 0.81 micromoles per liter.
 
+All models ran well with an Rhat of 1, chains which ran together, and normally distributed posterior distributions.
+
 Now these points alone do not tell us what impact these have on kelp biomass, but they do show us the direct effect that they have on nitrate level. This is useful because we will be using nitrate level as a part of out kelp biomass model.
 
-### What variables are direct causes of mean surface temperature according to our DAG? 
+### What variables are direct causes of mean surface temperature according to our DAG?
 
 Here we will analyze what variables have an impact on the surface water temperature and how large of an affect they have.
 
@@ -447,9 +449,11 @@ Now we can analyze what factors have a direct impact on surface water temp.
 
 **PDO:** For every one increase in PDO (unit-less index) the surface water temperature increased by an average of 0.32 °C. The affect was significantly different from zero because the compatibility interval ran from 0.30 to 0.34 °C.
 
+All models ran well with an Rhat of 1, chains which ran together, and normally distributed posterior distributions.
+
 Now these points alone do not tell us what impact these have on kelp biomass, but they do show us the direct effect that they have on surface water temperature. This is useful because we will be using surface water temperature as a part of out kelp biomass model.
 
-### What variables are direct causes of kelp biomass according to our DAG? 
+### What variables are direct causes of kelp biomass according to our DAG?
 
 Here we are finally analyzing what variables have a direct affect on kelp biomass. Included in the model is nitrate concentration, surface water temperature, and wave height. With our earlier ggplots early we learned that nitrate concentrations have an approximately logarithmic impact on nitrate concentration. Thus, we will be using a logarithmic model for nitrate in this model. With our earlier ggplots we learned that waves had a nonlinear pattern with a sweet spot for an increase in biomass. Thus, we will be using a non linear model with a k value of 8 to ensure that the line curves enough but there is not an over-fitting of the data.
 
@@ -484,6 +488,8 @@ Now we can analyze what factors have a direct impact on kelp biomass.
 
 **Wave Height:** For every one meter increase in the height of waves the kelp biomass decreased by an average of about 11000 kg. The affect was significantly different from zero because the comatibility interval ran from about -13000kg to -8000kg.
 
+All models ran well with an Rhat of 1, chains which ran together, and normally distributed posterior distributions.
+
 ### What are the total effects of NPGO, MEI, and PDO on Kelp biomass
 
 Now we will run a model to see the total affect NPGO, MEI, and PDO has on kelp biomass. In this model we will only be including the NPGO, MEI, and PDO variables. When looking at the dag we can see that surface water temp, nitrate concentration, and wave height are all mediators. Thus, to see the total affect of these the mediators will be left out.
@@ -511,6 +517,8 @@ Now we see what the total effect of our variables are.
 **MEI:** For every one increase in MEI (unit-less index) the kelp biomass increased by an average of 6400kg. The affect was significantly different from zero because the compatibility interval ran from 1900kg to 1100kg.
 
 **PDO:** For every one increase in MEI (unit-less index) the kelp biomass decreased by an average of about 16000kg. The affect was significantly different from zero because the compatibility interval ran from -20000kg to -11000kg.
+
+All models ran well with an Rhat of 1, chains which ran together, and normally distributed posterior distributions.
 
 ## Conclusion
 
