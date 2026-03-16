@@ -1,6 +1,6 @@
 ---
 title: "Final_Presentation_Gabriel"
-author: "Gabriel"
+author: "Gabriel Gott, Sora, and Leah"
 format: pdf
 editor: visual
 ---
@@ -376,7 +376,7 @@ impliedConditionalIndependencies(kelp_dag)
 
 Now we can begin to analyze the relationships in models. For this we will create Bayesian models estimated using MCMC.
 
-### What variables are direct causes of nitrate concentrations according to our DAG? (Adjustment direct effect)
+### What variables are direct causes of nitrate concentrations according to our DAG? 
 
 Here we will analyze what variables have an impact on the nitrate concentration and how large of an affect they have.
 
@@ -404,83 +404,54 @@ summary(m.nitrate.MEI.NPGO.PDO.Temp.Waves)
 plot(m.nitrate.MEI.NPGO.PDO.Temp.Waves)
 ```
 
-Now we can analyze what factors have an impact
+Now we can analyze what factors have a direct impact on the nitrate levels.
 
-### What variables are direct causes of mean surface temperature according to our DAG? (Adjustment direct effect)
+**NPGO**: It appears that for every one increase in the NPGO (unit-less index) then the nitrate levels increase by 0.61 micromoles per liter. The effect was significantly different from zero because the compatability interval ranged from 0.57 to 0.64 micromoles per liter.
 
-```{r}
-#Including MEI 
-#estimating the direct effect of MEI on surface temp:
-m.temp.MEI <- 
-  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
-      # Choose a gaussian (normal) distribution
-      family = gaussian,
-      # Specify the model here. 
-      mean_surf_temp ~ MEI,
-      # Here's where you specify parameters for executing the Markov chains
-      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
-      iter = 2000, warmup = 1000, chains = 4, cores = 4,
-      # Setting the "seed" determines which random numbers will get sampled.
-      # In this case, it makes the randomness of the Markov chain runs reproducible 
-      # (so that both of us get the exact same results when running the model)
-      seed = 4,
-      # Save the fitted model object as output - helpful for reloading in the output later
-      file = "outputs/m.temp.MEI")
+**PDO**: PDO did not have an impact on nitrate levels that was signidicantly different from zero. This is because the compatibility interval ran from -0.01 to 0.09 micromoles per liter.
 
+**MEI**: For every one increase in MEI (unit-less index) the nitrate level decreases by 0.73 micromoles per liter. The change was significantly different from zero because the compatibility interval ran from -0.77 to -0.68 micromoles per liter.
 
-summary(m.temp.MEI)
-plot(m.temp.MEI)
-```
+**Water Temperature**: For every 1 °C increase in water temperature the nitrate level decreased by -0.38. The affect was significantly different from zero because the comatibility interval ran from -0.40 to -0.35 micromoles per liter.
+
+**Waves**: For every one meter increase in wave height the nitrate levels increased at an average of 0.78 micromoles per liter. The affect was significantly different from zero because the comatibility interval ran from 0.75 to 0.81 micromoles per liter.
+
+Now these points alone do not tell us what impact these have on kelp biomass, but they do show us the direct effect that they have on nitrate level. This is useful because we will be using nitrate level as a part of out kelp biomass model.
+
+### What variables are direct causes of mean surface temperature according to our DAG? 
+
+Here we will analyze what variables have an impact on the surface water temperature and how large of an affect they have.
 
 ```{r}
-#Including PDO
-#estimating the direct effect of PDO on surface temp:
-m.temp.PDO <- 
-  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
-      # Choose a gaussian (normal) distribution
-      family = gaussian,
-      # Specify the model here. 
-      mean_surf_temp ~ PDO,
-      # Here's where you specify parameters for executing the Markov chains
-      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
-      iter = 2000, warmup = 1000, chains = 4, cores = 4,
-      # Setting the "seed" determines which random numbers will get sampled.
-      # In this case, it makes the randomness of the Markov chain runs reproducible 
-      # (so that both of us get the exact same results when running the model)
-      seed = 4,
-      # Save the fitted model object as output - helpful for reloading in the output later
-      file = "outputs/m.temp.PDO")
+#Including MEI, NPGO and PDO to see their affect on temp
+m.temp.MEI.NPGO.PDO <- 
+  brm(
+    data = combined_sitespecific_climind_temp,# Give the model the combined data
+    family = gaussian, # Choose a gaussian (normal) distribution
+    mean_surf_temp ~ MEI + NPGO + PDO, #using MEI NPGO and PDO to analyze temp
+    iter = 2000, warmup = 1000, chains = 4, cores = 4,
+    seed = 4, #which random numbers will get sampled
+    file = "outputs/m.temp.MEI.NPGO.PDO"
+  )
 
 
-summary(m.temp.PDO)
-plot(m.temp.PDO)
+summary(m.temp.MEI.NPGO.PDO)
+plot(m.temp.MEI.NPGO.PDO)
 ```
 
-```{r}
-#Including NPGO
-#estimating the direct effect of NPGO on surface temp:
-m.temp.NPGO <- 
-  brm(data = combined_sitespecific_climind_temp, # Give the model the combined data
-      # Choose a gaussian (normal) distribution
-      family = gaussian,
-      # Specify the model here. 
-      mean_surf_temp ~ NPGO,
-      # Here's where you specify parameters for executing the Markov chains
-      # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
-      iter = 2000, warmup = 1000, chains = 4, cores = 4,
-      # Setting the "seed" determines which random numbers will get sampled.
-      # In this case, it makes the randomness of the Markov chain runs reproducible 
-      # (so that both of us get the exact same results when running the model)
-      seed = 4,
-      # Save the fitted model object as output - helpful for reloading in the output later
-      file = "outputs/m.temp.NPGO")
+Now we can analyze what factors have a direct impact on surface water temp.
 
+**MEI:** For every one increase in MEI (unit-less index) the surface water temperature increased by an average of 0.14 °C. The affect was significantly different from zero because the compatibility interval ran from 0.12 to 0.16 °C.
 
-summary(m.temp.NPGO)
-plot(m.temp.NPGO)
-```
+**NPGO:** For every one increase in NPGO (unit-less index) the surface water temperature decreased by an average of 0.18 °C. The affect was significantly different from zero because the compatibility interval ran from -0.19 to -0.16°C.
 
-### What variables are direct causes of kelp biomass according to our DAG? (Adjustment direct effect)
+**PDO:** For every one increase in PDO (unit-less index) the surface water temperature increased by an average of 0.32 °C. The affect was significantly different from zero because the compatibility interval ran from 0.30 to 0.34 °C.
+
+Now these points alone do not tell us what impact these have on kelp biomass, but they do show us the direct effect that they have on surface water temperature. This is useful because we will be using surface water temperature as a part of out kelp biomass model.
+
+### What variables are direct causes of kelp biomass according to our DAG? 
+
+Here we are finally analyzing what variables have a direct affect on kelp biomass. Included in the model is nitrate concentration, surface water temperature, and wave height. With our earlier ggplots early we learned that nitrate concentrations have an approximately logarithmic impact on nitrate concentration. Thus, we will be using a logarithmic model for nitrate in this model. With our earlier ggplots we learned that waves had a nonlinear pattern with a sweet spot for an increase in biomass. Thus, we will be using a non linear model with a k value of 8 to ensure that the line curves enough but there is not an over-fitting of the data.
 
 ```{r}
 #Including temp + nitrate + waves
@@ -490,7 +461,7 @@ m.biomass.temp.nitrate.waves <-
       # Choose a gaussian (normal) distribution
       family = gaussian,
       # Specify the model here. 
-      kelp ~ mean_surf_temp + no3 + waves,
+      kelp ~ log10(no3) + mean_surf_temp + s(waves, k = 8),
       # Here's where you specify parameters for executing the Markov chains
       # We're using similar to the defaults, except we set cores to 4 so the analysis runs faster than the default of 1
       iter = 2000, warmup = 1000, chains = 4, cores = 4,
@@ -505,52 +476,42 @@ summary(m.biomass.temp.nitrate.waves)
 plot(m.biomass.temp.nitrate.waves)
 ```
 
+Now we can analyze what factors have a direct impact on kelp biomass.
+
+**Surface Water Temperature:** For every 1 °C increase in surface water temperature the kelp biomass increase by an average of about 53000 kg. The affect was significantly different from zero because the comatibility interval ran from about 51000kg to 55000kg.
+
+**Nitrate Concentration:** For every one increase in micro-moles of nitrate per liter the kelp biomass increased by an average of about 11000kg. The affect was significantly different from zero because the comatibility interval ran from about 10000kg to 12000kg.
+
+**Wave Height:** For every one meter increase in the height of waves the kelp biomass decreased by an average of about 11000 kg. The affect was significantly different from zero because the comatibility interval ran from about -13000kg to -8000kg.
+
 ### What are the total effects of NPGO, MEI, and PDO on Kelp biomass
+
+Now we will run a model to see the total affect NPGO, MEI, and PDO has on kelp biomass. In this model we will only be including the NPGO, MEI, and PDO variables. When looking at the dag we can see that surface water temp, nitrate concentration, and wave height are all mediators. Thus, to see the total affect of these the mediators will be left out.
 
 ```{r}
 #Total effect of NPGO on kelp biomass
-m.kelp.NPGO.total <- 
+m.kelp.NPGO.MEI.PDO.total <- 
   brm(
     data = combined_sitespecific_climind_temp, #gives data
     family = gaussian, #sets family as gaussian distribution
-    kelp ~ NPGO, #Sets parameters based on dag
+    kelp ~ NPGO + MEI + PDO, #Sets parameters based on dag
     iter = 2000, warmup = 1000, chains = 4, cores = 4, 
     seed = 4,
-    file = "outputs/m.kelp.NPGO.total"
+    file = "outputs/m.kelp.NPGO.MEI.PDO.total"
   )
 
-summary(m.kelp.NPGO.total)
-plot(m.kelp.NPGO.total)
+summary(m.kelp.NPGO.MEI.PDO.total)
+plot(m.kelp.NPGO.MEI.PDO.total)
 ```
 
-```{r}
-#Total effect of PDO on kelp biomass
-m.kelp.PDO.total <- 
-  brm(
-    data = combined_sitespecific_climind_temp, #gives data
-    family = gaussian, #sets family as gaussian distribution
-    kelp ~ PDO, #Sets parameters based on dag
-    iter = 2000, warmup = 1000, chains = 4, cores = 4, 
-    seed = 4,
-    file = "outputs/m.kelp.PDO.total"
-  )
+Now we see what the total effect of our variables are.
 
-summary(m.kelp.PDO.total)
-plot(m.kelp.PDO.total)
-```
+**NPGO:** NPGO did not have an effect which was significantly different from zero. The compatibility interval ran from about -2500kg to 3300 kg.
 
-```{r}
-#Total effect of MEI on kelp biomass
-m.kelp.MEI.total <- 
-  brm(
-    data = combined_sitespecific_climind_temp, #gives data
-    family = gaussian, #sets family as gaussian distribution
-    kelp ~ MEI, #Sets parameters based on dag
-    iter = 2000, warmup = 1000, chains = 4, cores = 4, 
-    seed = 4,
-    file = "outputs/m.kelp.MEI.total"
-  )
+**MEI:** For every one increase in MEI (unit-less index) the kelp biomass increased by an average of 6400kg. The affect was significantly different from zero because the compatibility interval ran from 1900kg to 1100kg.
 
-summary(m.kelp.MEI.total)
-plot(m.kelp.MEI.total)
-```
+**PDO:** For every one increase in MEI (unit-less index) the kelp biomass decreased by an average of about 16000kg. The affect was significantly different from zero because the compatibility interval ran from -20000kg to -11000kg.
+
+## Conclusion
+
+Kelp biomass can be influenced from a variety, but here we have learned a good bit about some variables impact on biomass. Through our data exploration we were able to create models which gave us some strong relationships. Through our models and plots we learned that an increase in MEI correlates to an increase in kelp biomass, while an increase in PDO correlates to a decrease in kelp biomass. However, NPGO does not have an effect on kelp biomass which is significantly different from zero. We learned about the direct effects of water temperature, wave height, and nitrate concentrations on kelp biomass as well. We learned that temperature correlated to a significant increase in kelp biomass. However, this trend would likely not continue forever as kelp would certainly die of at extreme temperature. Nitrate correlated to an increase in kelp biomass as well. This is likely due to an increase in nitrogen fixation rates for the algae, which is crucial in their growth and survival. Wave height seemed to have an interesting impact on biomass. Our models said that wave height correlated to a decrease in kelp biomass. However, it crucial to note that in our original ggplot we can see that there is certainly a sweet spot for kelp biomass at different wave heights. Thus, I believe that the wave height variable must be taken with a grain of salt. When all of the trends learned in the data are placed together we can get a pretty solid understanding of what influences kelp biomass. However, there is certainly more research to be done. If more data was collected, for example in our unobserved variables of grazing rates and eutrophication, we could learn much more about what influences kelp biomass. Finally, with that data new conservation plans can be put forth with higher confidence.
