@@ -5,6 +5,12 @@ format: pdf
 editor: visual
 ---
 
+## Introduction
+
+This quarto is the document which explains and gives scripts for all of our data wrangling. The **intended audience** are policy makers, with the intention of giving them the information they need to make proper conservation decisions. The **motivating question** was how do ocean conditions affect kelp biomass off the central coast of California from 1987 to 2019?
+
+## Loading Packages
+
 ```{r}
 #install.packages('tidyverse')
 library(tidyverse) # For data wrangling
